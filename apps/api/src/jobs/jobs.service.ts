@@ -128,4 +128,23 @@ async ingestBulk(jobs: IngestJobDto[]) {
 }
 
 
+async timeseries(days = 30) {
+  const safeDays = Math.min(Math.max(days, 1), 365);
+
+  const rows = await this.prisma.$queryRaw<
+    Array<{ day: string; count: bigint }>
+  >`
+    SELECT to_char(date_trunc('day', "createdAt"), 'YYYY-MM-DD') AS "day",
+           COUNT(*)::bigint AS "count"
+    FROM "JobPost"
+    WHERE "createdAt" >= (NOW() - (${safeDays}::int * INTERVAL '1 day'))
+    GROUP BY date_trunc('day', "createdAt")
+    ORDER BY date_trunc('day', "createdAt") ASC;
+  `;
+
+  return rows.map(r => ({ day: r.day, count: Number(r.count) }));
+}
+
+
+
 }

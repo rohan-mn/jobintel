@@ -39,4 +39,10 @@ health() {
   async summary() {
     return this.jobs.summary();
   }
+
+
+  @Get("analytics/timeseries")
+async timeseries(@Query("days") days?: string) {
+  return this.jobs.timeseries(days ? Number(days) : 30);
+}
 }
