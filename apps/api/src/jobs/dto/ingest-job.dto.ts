@@ -8,8 +8,10 @@ import {
   IsUrl,
   MaxLength,
   ValidateNested,
+  IsIn
 } from "class-validator";
 import { Type } from "class-transformer";
+
 
 export class IngestJobDto
 {
@@ -44,6 +46,43 @@ export class IngestJobDto
   @IsOptional()
   @IsISO8601()
   postedAt?: string;
+
+  @IsOptional()
+  @IsIn(["REMOTE", "ONSITE", "HYBRID", "UNKNOWN"])
+  workMode?: "REMOTE" | "ONSITE" | "HYBRID" | "UNKNOWN";
+
+  @IsOptional()
+  @IsIn(["INTERN", "JUNIOR", "MID", "SENIOR", "LEAD", "UNKNOWN"])
+  experienceLevel?: "INTERN" | "JUNIOR" | "MID" | "SENIOR" | "LEAD" | "UNKNOWN";
+
+  @IsOptional()
+  @IsIn([
+    "BACKEND",
+    "FRONTEND",
+    "FULLSTACK",
+    "DATA",
+    "ML",
+    "DEVOPS",
+    "SECURITY",
+    "MOBILE",
+    "QA",
+    "PM",
+    "OTHER",
+  ])
+  roleCategory?:
+    | "BACKEND"
+    | "FRONTEND"
+    | "FULLSTACK"
+    | "DATA"
+    | "ML"
+    | "DEVOPS"
+    | "SECURITY"
+    | "MOBILE"
+    | "QA"
+    | "PM"
+    | "OTHER";
+
+
 }
 
 export class IngestJobsBodyDto

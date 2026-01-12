@@ -66,6 +66,27 @@ export type DateTimeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedDateTimeFilter<$PrismaModel> | Date | string
 }
 
+export type EnumWorkModeFilter<$PrismaModel = never> = {
+  equals?: $Enums.WorkMode | Prisma.EnumWorkModeFieldRefInput<$PrismaModel>
+  in?: $Enums.WorkMode[] | Prisma.ListEnumWorkModeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.WorkMode[] | Prisma.ListEnumWorkModeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumWorkModeFilter<$PrismaModel> | $Enums.WorkMode
+}
+
+export type EnumExperienceLevelFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExperienceLevel | Prisma.EnumExperienceLevelFieldRefInput<$PrismaModel>
+  in?: $Enums.ExperienceLevel[] | Prisma.ListEnumExperienceLevelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExperienceLevel[] | Prisma.ListEnumExperienceLevelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExperienceLevelFilter<$PrismaModel> | $Enums.ExperienceLevel
+}
+
+export type EnumRoleCategoryFilter<$PrismaModel = never> = {
+  equals?: $Enums.RoleCategory | Prisma.EnumRoleCategoryFieldRefInput<$PrismaModel>
+  in?: $Enums.RoleCategory[] | Prisma.ListEnumRoleCategoryFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RoleCategory[] | Prisma.ListEnumRoleCategoryFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRoleCategoryFilter<$PrismaModel> | $Enums.RoleCategory
+}
+
 export type SortOrderInput = {
   sort: Prisma.SortOrder
   nulls?: Prisma.NullsOrder
@@ -135,6 +156,36 @@ export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeFilter<$PrismaModel>
 }
 
+export type EnumWorkModeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.WorkMode | Prisma.EnumWorkModeFieldRefInput<$PrismaModel>
+  in?: $Enums.WorkMode[] | Prisma.ListEnumWorkModeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.WorkMode[] | Prisma.ListEnumWorkModeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumWorkModeWithAggregatesFilter<$PrismaModel> | $Enums.WorkMode
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumWorkModeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumWorkModeFilter<$PrismaModel>
+}
+
+export type EnumExperienceLevelWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExperienceLevel | Prisma.EnumExperienceLevelFieldRefInput<$PrismaModel>
+  in?: $Enums.ExperienceLevel[] | Prisma.ListEnumExperienceLevelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExperienceLevel[] | Prisma.ListEnumExperienceLevelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExperienceLevelWithAggregatesFilter<$PrismaModel> | $Enums.ExperienceLevel
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumExperienceLevelFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumExperienceLevelFilter<$PrismaModel>
+}
+
+export type EnumRoleCategoryWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.RoleCategory | Prisma.EnumRoleCategoryFieldRefInput<$PrismaModel>
+  in?: $Enums.RoleCategory[] | Prisma.ListEnumRoleCategoryFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RoleCategory[] | Prisma.ListEnumRoleCategoryFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRoleCategoryWithAggregatesFilter<$PrismaModel> | $Enums.RoleCategory
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumRoleCategoryFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumRoleCategoryFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -183,6 +234,27 @@ export type NestedDateTimeFilter<$PrismaModel = never> = {
   gt?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
   gte?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
   not?: Prisma.NestedDateTimeFilter<$PrismaModel> | Date | string
+}
+
+export type NestedEnumWorkModeFilter<$PrismaModel = never> = {
+  equals?: $Enums.WorkMode | Prisma.EnumWorkModeFieldRefInput<$PrismaModel>
+  in?: $Enums.WorkMode[] | Prisma.ListEnumWorkModeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.WorkMode[] | Prisma.ListEnumWorkModeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumWorkModeFilter<$PrismaModel> | $Enums.WorkMode
+}
+
+export type NestedEnumExperienceLevelFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExperienceLevel | Prisma.EnumExperienceLevelFieldRefInput<$PrismaModel>
+  in?: $Enums.ExperienceLevel[] | Prisma.ListEnumExperienceLevelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExperienceLevel[] | Prisma.ListEnumExperienceLevelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExperienceLevelFilter<$PrismaModel> | $Enums.ExperienceLevel
+}
+
+export type NestedEnumRoleCategoryFilter<$PrismaModel = never> = {
+  equals?: $Enums.RoleCategory | Prisma.EnumRoleCategoryFieldRefInput<$PrismaModel>
+  in?: $Enums.RoleCategory[] | Prisma.ListEnumRoleCategoryFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RoleCategory[] | Prisma.ListEnumRoleCategoryFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRoleCategoryFilter<$PrismaModel> | $Enums.RoleCategory
 }
 
 export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
@@ -267,6 +339,36 @@ export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedDateTimeFilter<$PrismaModel>
   _max?: Prisma.NestedDateTimeFilter<$PrismaModel>
+}
+
+export type NestedEnumWorkModeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.WorkMode | Prisma.EnumWorkModeFieldRefInput<$PrismaModel>
+  in?: $Enums.WorkMode[] | Prisma.ListEnumWorkModeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.WorkMode[] | Prisma.ListEnumWorkModeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumWorkModeWithAggregatesFilter<$PrismaModel> | $Enums.WorkMode
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumWorkModeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumWorkModeFilter<$PrismaModel>
+}
+
+export type NestedEnumExperienceLevelWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExperienceLevel | Prisma.EnumExperienceLevelFieldRefInput<$PrismaModel>
+  in?: $Enums.ExperienceLevel[] | Prisma.ListEnumExperienceLevelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExperienceLevel[] | Prisma.ListEnumExperienceLevelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExperienceLevelWithAggregatesFilter<$PrismaModel> | $Enums.ExperienceLevel
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumExperienceLevelFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumExperienceLevelFilter<$PrismaModel>
+}
+
+export type NestedEnumRoleCategoryWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.RoleCategory | Prisma.EnumRoleCategoryFieldRefInput<$PrismaModel>
+  in?: $Enums.RoleCategory[] | Prisma.ListEnumRoleCategoryFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RoleCategory[] | Prisma.ListEnumRoleCategoryFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRoleCategoryWithAggregatesFilter<$PrismaModel> | $Enums.RoleCategory
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumRoleCategoryFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumRoleCategoryFilter<$PrismaModel>
 }
 
 

@@ -79,7 +79,10 @@ export const JobPostScalarFieldEnum = {
   location: 'location',
   url: 'url',
   postedAt: 'postedAt',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  workMode: 'workMode',
+  experienceLevel: 'experienceLevel',
+  roleCategory: 'roleCategory'
 } as const
 
 export type JobPostScalarFieldEnum = (typeof JobPostScalarFieldEnum)[keyof typeof JobPostScalarFieldEnum]

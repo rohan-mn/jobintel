@@ -34,6 +34,9 @@ export type JobPostMinAggregateOutputType = {
   url: string | null
   postedAt: Date | null
   createdAt: Date | null
+  workMode: $Enums.WorkMode | null
+  experienceLevel: $Enums.ExperienceLevel | null
+  roleCategory: $Enums.RoleCategory | null
 }
 
 export type JobPostMaxAggregateOutputType = {
@@ -46,6 +49,9 @@ export type JobPostMaxAggregateOutputType = {
   url: string | null
   postedAt: Date | null
   createdAt: Date | null
+  workMode: $Enums.WorkMode | null
+  experienceLevel: $Enums.ExperienceLevel | null
+  roleCategory: $Enums.RoleCategory | null
 }
 
 export type JobPostCountAggregateOutputType = {
@@ -58,6 +64,9 @@ export type JobPostCountAggregateOutputType = {
   url: number
   postedAt: number
   createdAt: number
+  workMode: number
+  experienceLevel: number
+  roleCategory: number
   _all: number
 }
 
@@ -72,6 +81,9 @@ export type JobPostMinAggregateInputType = {
   url?: true
   postedAt?: true
   createdAt?: true
+  workMode?: true
+  experienceLevel?: true
+  roleCategory?: true
 }
 
 export type JobPostMaxAggregateInputType = {
@@ -84,6 +96,9 @@ export type JobPostMaxAggregateInputType = {
   url?: true
   postedAt?: true
   createdAt?: true
+  workMode?: true
+  experienceLevel?: true
+  roleCategory?: true
 }
 
 export type JobPostCountAggregateInputType = {
@@ -96,6 +111,9 @@ export type JobPostCountAggregateInputType = {
   url?: true
   postedAt?: true
   createdAt?: true
+  workMode?: true
+  experienceLevel?: true
+  roleCategory?: true
   _all?: true
 }
 
@@ -181,6 +199,9 @@ export type JobPostGroupByOutputType = {
   url: string
   postedAt: Date | null
   createdAt: Date
+  workMode: $Enums.WorkMode
+  experienceLevel: $Enums.ExperienceLevel
+  roleCategory: $Enums.RoleCategory
   _count: JobPostCountAggregateOutputType | null
   _min: JobPostMinAggregateOutputType | null
   _max: JobPostMaxAggregateOutputType | null
@@ -214,6 +235,9 @@ export type JobPostWhereInput = {
   url?: Prisma.StringFilter<"JobPost"> | string
   postedAt?: Prisma.DateTimeNullableFilter<"JobPost"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"JobPost"> | Date | string
+  workMode?: Prisma.EnumWorkModeFilter<"JobPost"> | $Enums.WorkMode
+  experienceLevel?: Prisma.EnumExperienceLevelFilter<"JobPost"> | $Enums.ExperienceLevel
+  roleCategory?: Prisma.EnumRoleCategoryFilter<"JobPost"> | $Enums.RoleCategory
 }
 
 export type JobPostOrderByWithRelationInput = {
@@ -226,6 +250,9 @@ export type JobPostOrderByWithRelationInput = {
   url?: Prisma.SortOrder
   postedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  workMode?: Prisma.SortOrder
+  experienceLevel?: Prisma.SortOrder
+  roleCategory?: Prisma.SortOrder
 }
 
 export type JobPostWhereUniqueInput = Prisma.AtLeast<{
@@ -242,6 +269,9 @@ export type JobPostWhereUniqueInput = Prisma.AtLeast<{
   url?: Prisma.StringFilter<"JobPost"> | string
   postedAt?: Prisma.DateTimeNullableFilter<"JobPost"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"JobPost"> | Date | string
+  workMode?: Prisma.EnumWorkModeFilter<"JobPost"> | $Enums.WorkMode
+  experienceLevel?: Prisma.EnumExperienceLevelFilter<"JobPost"> | $Enums.ExperienceLevel
+  roleCategory?: Prisma.EnumRoleCategoryFilter<"JobPost"> | $Enums.RoleCategory
 }, "id" | "source_url">
 
 export type JobPostOrderByWithAggregationInput = {
@@ -254,6 +284,9 @@ export type JobPostOrderByWithAggregationInput = {
   url?: Prisma.SortOrder
   postedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  workMode?: Prisma.SortOrder
+  experienceLevel?: Prisma.SortOrder
+  roleCategory?: Prisma.SortOrder
   _count?: Prisma.JobPostCountOrderByAggregateInput
   _max?: Prisma.JobPostMaxOrderByAggregateInput
   _min?: Prisma.JobPostMinOrderByAggregateInput
@@ -272,6 +305,9 @@ export type JobPostScalarWhereWithAggregatesInput = {
   url?: Prisma.StringWithAggregatesFilter<"JobPost"> | string
   postedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"JobPost"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"JobPost"> | Date | string
+  workMode?: Prisma.EnumWorkModeWithAggregatesFilter<"JobPost"> | $Enums.WorkMode
+  experienceLevel?: Prisma.EnumExperienceLevelWithAggregatesFilter<"JobPost"> | $Enums.ExperienceLevel
+  roleCategory?: Prisma.EnumRoleCategoryWithAggregatesFilter<"JobPost"> | $Enums.RoleCategory
 }
 
 export type JobPostCreateInput = {
@@ -284,6 +320,9 @@ export type JobPostCreateInput = {
   url: string
   postedAt?: Date | string | null
   createdAt?: Date | string
+  workMode?: $Enums.WorkMode
+  experienceLevel?: $Enums.ExperienceLevel
+  roleCategory?: $Enums.RoleCategory
 }
 
 export type JobPostUncheckedCreateInput = {
@@ -296,6 +335,9 @@ export type JobPostUncheckedCreateInput = {
   url: string
   postedAt?: Date | string | null
   createdAt?: Date | string
+  workMode?: $Enums.WorkMode
+  experienceLevel?: $Enums.ExperienceLevel
+  roleCategory?: $Enums.RoleCategory
 }
 
 export type JobPostUpdateInput = {
@@ -308,6 +350,9 @@ export type JobPostUpdateInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  workMode?: Prisma.EnumWorkModeFieldUpdateOperationsInput | $Enums.WorkMode
+  experienceLevel?: Prisma.EnumExperienceLevelFieldUpdateOperationsInput | $Enums.ExperienceLevel
+  roleCategory?: Prisma.EnumRoleCategoryFieldUpdateOperationsInput | $Enums.RoleCategory
 }
 
 export type JobPostUncheckedUpdateInput = {
@@ -320,6 +365,9 @@ export type JobPostUncheckedUpdateInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  workMode?: Prisma.EnumWorkModeFieldUpdateOperationsInput | $Enums.WorkMode
+  experienceLevel?: Prisma.EnumExperienceLevelFieldUpdateOperationsInput | $Enums.ExperienceLevel
+  roleCategory?: Prisma.EnumRoleCategoryFieldUpdateOperationsInput | $Enums.RoleCategory
 }
 
 export type JobPostCreateManyInput = {
@@ -332,6 +380,9 @@ export type JobPostCreateManyInput = {
   url: string
   postedAt?: Date | string | null
   createdAt?: Date | string
+  workMode?: $Enums.WorkMode
+  experienceLevel?: $Enums.ExperienceLevel
+  roleCategory?: $Enums.RoleCategory
 }
 
 export type JobPostUpdateManyMutationInput = {
@@ -344,6 +395,9 @@ export type JobPostUpdateManyMutationInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  workMode?: Prisma.EnumWorkModeFieldUpdateOperationsInput | $Enums.WorkMode
+  experienceLevel?: Prisma.EnumExperienceLevelFieldUpdateOperationsInput | $Enums.ExperienceLevel
+  roleCategory?: Prisma.EnumRoleCategoryFieldUpdateOperationsInput | $Enums.RoleCategory
 }
 
 export type JobPostUncheckedUpdateManyInput = {
@@ -356,6 +410,9 @@ export type JobPostUncheckedUpdateManyInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  workMode?: Prisma.EnumWorkModeFieldUpdateOperationsInput | $Enums.WorkMode
+  experienceLevel?: Prisma.EnumExperienceLevelFieldUpdateOperationsInput | $Enums.ExperienceLevel
+  roleCategory?: Prisma.EnumRoleCategoryFieldUpdateOperationsInput | $Enums.RoleCategory
 }
 
 export type JobPostSourceUrlCompoundUniqueInput = {
@@ -373,6 +430,9 @@ export type JobPostCountOrderByAggregateInput = {
   url?: Prisma.SortOrder
   postedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  workMode?: Prisma.SortOrder
+  experienceLevel?: Prisma.SortOrder
+  roleCategory?: Prisma.SortOrder
 }
 
 export type JobPostMaxOrderByAggregateInput = {
@@ -385,6 +445,9 @@ export type JobPostMaxOrderByAggregateInput = {
   url?: Prisma.SortOrder
   postedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  workMode?: Prisma.SortOrder
+  experienceLevel?: Prisma.SortOrder
+  roleCategory?: Prisma.SortOrder
 }
 
 export type JobPostMinOrderByAggregateInput = {
@@ -397,6 +460,9 @@ export type JobPostMinOrderByAggregateInput = {
   url?: Prisma.SortOrder
   postedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  workMode?: Prisma.SortOrder
+  experienceLevel?: Prisma.SortOrder
+  roleCategory?: Prisma.SortOrder
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -415,6 +481,18 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
+export type EnumWorkModeFieldUpdateOperationsInput = {
+  set?: $Enums.WorkMode
+}
+
+export type EnumExperienceLevelFieldUpdateOperationsInput = {
+  set?: $Enums.ExperienceLevel
+}
+
+export type EnumRoleCategoryFieldUpdateOperationsInput = {
+  set?: $Enums.RoleCategory
+}
+
 
 
 export type JobPostSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -427,6 +505,9 @@ export type JobPostSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   url?: boolean
   postedAt?: boolean
   createdAt?: boolean
+  workMode?: boolean
+  experienceLevel?: boolean
+  roleCategory?: boolean
 }, ExtArgs["result"]["jobPost"]>
 
 export type JobPostSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -439,6 +520,9 @@ export type JobPostSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   url?: boolean
   postedAt?: boolean
   createdAt?: boolean
+  workMode?: boolean
+  experienceLevel?: boolean
+  roleCategory?: boolean
 }, ExtArgs["result"]["jobPost"]>
 
 export type JobPostSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -451,6 +535,9 @@ export type JobPostSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   url?: boolean
   postedAt?: boolean
   createdAt?: boolean
+  workMode?: boolean
+  experienceLevel?: boolean
+  roleCategory?: boolean
 }, ExtArgs["result"]["jobPost"]>
 
 export type JobPostSelectScalar = {
@@ -463,9 +550,12 @@ export type JobPostSelectScalar = {
   url?: boolean
   postedAt?: boolean
   createdAt?: boolean
+  workMode?: boolean
+  experienceLevel?: boolean
+  roleCategory?: boolean
 }
 
-export type JobPostOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "source" | "sourceJobId" | "title" | "company" | "location" | "url" | "postedAt" | "createdAt", ExtArgs["result"]["jobPost"]>
+export type JobPostOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "source" | "sourceJobId" | "title" | "company" | "location" | "url" | "postedAt" | "createdAt" | "workMode" | "experienceLevel" | "roleCategory", ExtArgs["result"]["jobPost"]>
 
 export type $JobPostPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "JobPost"
@@ -480,6 +570,9 @@ export type $JobPostPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     url: string
     postedAt: Date | null
     createdAt: Date
+    workMode: $Enums.WorkMode
+    experienceLevel: $Enums.ExperienceLevel
+    roleCategory: $Enums.RoleCategory
   }, ExtArgs["result"]["jobPost"]>
   composites: {}
 }
@@ -912,6 +1005,9 @@ export interface JobPostFieldRefs {
   readonly url: Prisma.FieldRef<"JobPost", 'String'>
   readonly postedAt: Prisma.FieldRef<"JobPost", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"JobPost", 'DateTime'>
+  readonly workMode: Prisma.FieldRef<"JobPost", 'WorkMode'>
+  readonly experienceLevel: Prisma.FieldRef<"JobPost", 'ExperienceLevel'>
+  readonly roleCategory: Prisma.FieldRef<"JobPost", 'RoleCategory'>
 }
     
 

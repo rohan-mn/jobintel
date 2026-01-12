@@ -526,7 +526,10 @@ export const JobPostScalarFieldEnum = {
   location: 'location',
   url: 'url',
   postedAt: 'postedAt',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  workMode: 'workMode',
+  experienceLevel: 'experienceLevel',
+  roleCategory: 'roleCategory'
 } as const
 
 export type JobPostScalarFieldEnum = (typeof JobPostScalarFieldEnum)[keyof typeof JobPostScalarFieldEnum]
@@ -587,6 +590,48 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'WorkMode'
+ */
+export type EnumWorkModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WorkMode'>
+    
+
+
+/**
+ * Reference to a field of type 'WorkMode[]'
+ */
+export type ListEnumWorkModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WorkMode[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ExperienceLevel'
+ */
+export type EnumExperienceLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExperienceLevel'>
+    
+
+
+/**
+ * Reference to a field of type 'ExperienceLevel[]'
+ */
+export type ListEnumExperienceLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExperienceLevel[]'>
+    
+
+
+/**
+ * Reference to a field of type 'RoleCategory'
+ */
+export type EnumRoleCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RoleCategory'>
+    
+
+
+/**
+ * Reference to a field of type 'RoleCategory[]'
+ */
+export type ListEnumRoleCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RoleCategory[]'>
     
 
 

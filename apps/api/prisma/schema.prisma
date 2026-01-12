@@ -1,18 +1,41 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider     = "prisma-client"
   output       = "../src/generated/prisma"
   moduleFormat = "cjs"
 }
 
-
 datasource db {
   provider = "postgresql"
+}
+
+enum WorkMode {
+  REMOTE
+  ONSITE
+  HYBRID
+  UNKNOWN
+}
+
+enum ExperienceLevel {
+  INTERN
+  JUNIOR
+  MID
+  SENIOR
+  LEAD
+  UNKNOWN
+}
+
+enum RoleCategory {
+  BACKEND
+  FRONTEND
+  FULLSTACK
+  DATA
+  ML
+  DEVOPS
+  SECURITY
+  MOBILE
+  QA
+  PM
+  OTHER
 }
 
 model JobPost {
@@ -26,5 +49,19 @@ model JobPost {
   postedAt    DateTime?
   createdAt   DateTime @default(now())
 
+  // ✅ new fields
+  workMode        WorkMode        @default(UNKNOWN)
+  experienceLevel ExperienceLevel @default(UNKNOWN)
+  roleCategory    RoleCategory    @default(OTHER)
+
   @@unique([source, url])
+
+  // ✅ indexes (helps filtering + sorting)
+  @@index([createdAt])
+  @@index([company])
+  @@index([location])
+  @@index([workMode])
+  @@index([experienceLevel])
+  @@index([roleCategory])
+  @@index([createdAt, roleCategory])
 }

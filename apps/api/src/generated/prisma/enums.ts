@@ -9,7 +9,40 @@
 * 🟢 You can import this file directly.
 */
 
+export const WorkMode = {
+  REMOTE: 'REMOTE',
+  ONSITE: 'ONSITE',
+  HYBRID: 'HYBRID',
+  UNKNOWN: 'UNKNOWN'
+} as const
+
+export type WorkMode = (typeof WorkMode)[keyof typeof WorkMode]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const ExperienceLevel = {
+  INTERN: 'INTERN',
+  JUNIOR: 'JUNIOR',
+  MID: 'MID',
+  SENIOR: 'SENIOR',
+  LEAD: 'LEAD',
+  UNKNOWN: 'UNKNOWN'
+} as const
+
+export type ExperienceLevel = (typeof ExperienceLevel)[keyof typeof ExperienceLevel]
+
+
+export const RoleCategory = {
+  BACKEND: 'BACKEND',
+  FRONTEND: 'FRONTEND',
+  FULLSTACK: 'FULLSTACK',
+  DATA: 'DATA',
+  ML: 'ML',
+  DEVOPS: 'DEVOPS',
+  SECURITY: 'SECURITY',
+  MOBILE: 'MOBILE',
+  QA: 'QA',
+  PM: 'PM',
+  OTHER: 'OTHER'
+} as const
+
+export type RoleCategory = (typeof RoleCategory)[keyof typeof RoleCategory]

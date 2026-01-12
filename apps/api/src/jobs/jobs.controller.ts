@@ -11,20 +11,25 @@ export class JobsController {
     return this.jobs.ingestMany(body.jobs);
   }
 
-
   @Get("health")
-health() {
-  return { status: "ok" };
-}
+  health() {
+    return { status: "ok" };
+  }
 
-
-  @Get("/jobs")
+  @Get("jobs")
   async list(
     @Query("q") q?: string,
     @Query("location") location?: string,
     @Query("company") company?: string,
     @Query("take") take?: string,
     @Query("skip") skip?: string,
+
+    // ✅ new filter params (6.5-A)
+    @Query("workMode") workMode?: string,
+    @Query("experienceLevel") experienceLevel?: string,
+    @Query("roleCategory") roleCategory?: string,
+    @Query("from") from?: string,
+    @Query("to") to?: string,
   ) {
     return this.jobs.list({
       q,
@@ -32,17 +37,45 @@ health() {
       company,
       take: take ? Number(take) : undefined,
       skip: skip ? Number(skip) : undefined,
+      workMode,
+      experienceLevel,
+      roleCategory,
+      from,
+      to,
     });
   }
 
-  @Get("/analytics/summary")
+  @Get("analytics/summary")
   async summary() {
     return this.jobs.summary();
   }
 
-
   @Get("analytics/timeseries")
-async timeseries(@Query("days") days?: string) {
-  return this.jobs.timeseries(days ? Number(days) : 30);
-}
+  async timeseries(@Query("days") days?: string) {
+    return this.jobs.timeseries(days ? Number(days) : 30);
+  }
+
+  // ✅ new endpoint (6.5-B)
+  @Get("analytics/breakdown")
+  async breakdown(
+    @Query("from") from?: string,
+    @Query("to") to?: string,
+    @Query("q") q?: string,
+    @Query("company") company?: string,
+    @Query("location") location?: string,
+    @Query("workMode") workMode?: string,
+    @Query("experienceLevel") experienceLevel?: string,
+    @Query("roleCategory") roleCategory?: string,
+  ) {
+    return this.jobs.analyticsBreakdown({
+      from,
+      to,
+      q,
+      company,
+      location,
+      workMode,
+      experienceLevel,
+      roleCategory,
+    });
+  }
 }

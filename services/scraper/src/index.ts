@@ -3,6 +3,7 @@ import axios from "axios";
 import { sleep, withRetries } from "./utils";
 import { jobsQueue, QUEUE_NAME } from "./queue";
 
+
 type RemoteOkJob = {
   id?: number | string;
   position?: string;
