@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma.service";
 import { IngestJobDto } from "./dto/ingest-job.dto";
 
+
 @Injectable()
 export class JobsService
 {
@@ -37,13 +38,17 @@ export class JobsService
 
         inserted++;
       }
-      catch
+      catch(e)
       {
-        // Most likely unique constraint violation (duplicate).
-        skipped++;
+         if (e?.code === "P2002") {
+    skipped++;
+  } else {
+    throw e;
+  }
+        
       }
     }
-
+    console.log(`[ingest] inserted=${inserted} skipped=${skipped}`);
     return { inserted, skipped };
   }
 
@@ -101,5 +106,26 @@ export class JobsService
     bySource: rows.map(r => ({ source: r.source, count: Number(r.count) })),
   };
 }
+
+async ingestBulk(jobs: IngestJobDto[]) {
+  const result = await this.prisma.jobPost.createMany({
+    data: jobs.map(j => ({
+      source: j.source,
+      sourceJobId: j.sourceJobId,
+      title: j.title,
+      company: j.company,
+      location: j.location,
+      url: j.url,
+      postedAt: j.postedAt ? new Date(j.postedAt) : undefined,
+    })),
+    skipDuplicates: true,
+  });
+
+  return {
+    inserted: result.count,
+    skipped: jobs.length - result.count,
+  };
+}
+
 
 }

@@ -2,17 +2,21 @@ import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import { JobsService } from "./jobs.service";
 import { IngestJobsBodyDto } from "./dto/ingest-job.dto";
 
-@Controller()
-export class JobsController
-{
+@Controller("ingest")
+export class JobsController {
   constructor(private readonly jobs: JobsService) {}
 
-  @Post("/ingest/jobs")
-  async ingest(@Body() body: IngestJobsBodyDto)
-  {
-    const jobs = Array.isArray(body?.jobs) ? body.jobs : [];
-    return this.jobs.ingestMany(jobs);
+  @Post("jobs")
+  async ingest(@Body() body: IngestJobsBodyDto) {
+    return this.jobs.ingestMany(body.jobs);
   }
+
+
+  @Get("health")
+health() {
+  return { status: "ok" };
+}
+
 
   @Get("/jobs")
   async list(
@@ -21,8 +25,7 @@ export class JobsController
     @Query("company") company?: string,
     @Query("take") take?: string,
     @Query("skip") skip?: string,
-  )
-  {
+  ) {
     return this.jobs.list({
       q,
       location,
@@ -33,8 +36,7 @@ export class JobsController
   }
 
   @Get("/analytics/summary")
-  async summary()
-  {
+  async summary() {
     return this.jobs.summary();
   }
 }
