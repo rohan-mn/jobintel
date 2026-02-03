@@ -1,3 +1,4 @@
+// app.controller.ts
 import { Controller, Get } from "@nestjs/common";
 import { PrismaService } from "./prisma.service";
 
