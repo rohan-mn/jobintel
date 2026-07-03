@@ -1,3 +1,280 @@
 name: jobintel
 
-services: {}
+x-node-service: &node-service
+  image: jobintel-node:local
+  restart: unless-stopped
+  init: true
+  env_file:
+    - .env
+  networks:
+    - jobintel-network
+
+x-database-dependencies: &database-dependencies
+  postgres:
+    condition: service_healthy
+  redis:
+    condition: service_healthy
+
+services:
+  postgres:
+    image: postgres:18.4-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks:
+      - jobintel-network
+
+  redis:
+    image: redis:8.4-alpine
+    restart: unless-stopped
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
+      - --requirepass
+      - ${REDIS_PASSWORD}
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "redis-cli --no-auth-warning -a \"$${REDIS_PASSWORD}\" ping | grep PONG"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - jobintel-network
+
+  ollama:
+    image: ollama/ollama:latest
+    restart: unless-stopped
+    ports:
+      - "${OLLAMA_PORT:-11434}:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "ollama",
+          "list"
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    networks:
+      - jobintel-network
+
+  api:
+    <<: *node-service
+    build:
+      context: .
+      dockerfile: infrastructure/docker/node-service.Dockerfile
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      SERVICE_NAME: api
+      PORT: 3001
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      OLLAMA_BASE_URL: http://ollama:11434
+    command:
+      - node
+      - --input-type=module
+      - -e
+      - |
+        import http from "node:http";
+
+        const port = Number(process.env.PORT ?? 3001);
+
+        const server = http.createServer((request, response) => {
+          response.writeHead(200, {
+            "content-type": "application/json"
+          });
+
+          response.end(JSON.stringify({
+            service: "api",
+            status: "ok",
+            placeholder: true,
+            path: request.url
+          }));
+        });
+
+        server.listen(port, "0.0.0.0", () => {
+          console.log(`API placeholder listening on port $${port}`);
+        });
+    ports:
+      - "${API_PORT:-3001}:3001"
+    depends_on:
+      <<: *database-dependencies
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3001/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  dashboard:
+    <<: *node-service
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      SERVICE_NAME: dashboard
+      PORT: 3000
+      API_INTERNAL_URL: http://api:3001
+      NEXT_PUBLIC_API_URL: http://localhost:${API_PORT:-3001}
+    command:
+      - node
+      - --input-type=module
+      - -e
+      - |
+        import http from "node:http";
+
+        const port = Number(process.env.PORT ?? 3000);
+
+        const server = http.createServer((request, response) => {
+          if (request.url === "/health") {
+            response.writeHead(200, {
+              "content-type": "application/json"
+            });
+
+            response.end(JSON.stringify({
+              service: "dashboard",
+              status: "ok",
+              placeholder: true
+            }));
+
+            return;
+          }
+
+          response.writeHead(200, {
+            "content-type": "text/html; charset=utf-8"
+          });
+
+          response.end(`
+            <!doctype html>
+            <html lang="en">
+              <head>
+                <meta charset="utf-8">
+                <title>jobIntel</title>
+              </head>
+              <body>
+                <h1>jobIntel</h1>
+                <p>Dashboard container is running.</p>
+                <p>The Next.js dashboard has not been implemented yet.</p>
+              </body>
+            </html>
+          `);
+        });
+
+        server.listen(port, "0.0.0.0", () => {
+          console.log(`Dashboard placeholder listening on port $${port}`);
+        });
+    ports:
+      - "${DASHBOARD_PORT:-3000}:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  scheduler:
+    <<: *node-service
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      SERVICE_NAME: scheduler
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+    command:
+      - node
+      - -e
+      - |
+        console.log("Scheduler container is running in placeholder mode.");
+        setInterval(() => {}, 2147483647);
+    depends_on:
+      <<: *database-dependencies
+
+  crawler-worker:
+    <<: *node-service
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      SERVICE_NAME: crawler-worker
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+    command:
+      - node
+      - -e
+      - |
+        console.log("Crawler worker container is running in placeholder mode.");
+        setInterval(() => {}, 2147483647);
+    depends_on:
+      <<: *database-dependencies
+
+  ai-enrichment:
+    <<: *node-service
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      SERVICE_NAME: ai-enrichment
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      OLLAMA_BASE_URL: http://ollama:11434
+    command:
+      - node
+      - -e
+      - |
+        console.log("AI enrichment container is running in placeholder mode.");
+        setInterval(() => {}, 2147483647);
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      ollama:
+        condition: service_healthy
+
+networks:
+  jobintel-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  redis-data:
+  ollama-data:
