@@ -11,6 +11,10 @@
     ".": "./src/index.ts",
     "./common": "./src/common.ts",
     "./source": "./src/source.ts",
-    "./job": "./src/job.ts"
+    "./job": "./src/job.ts",
+    "./schemas": "./src/schemas/index.ts"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
   }
 }
