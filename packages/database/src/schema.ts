@@ -436,10 +436,10 @@ export const rawJobs = pgTable(
       .notNull(),
   },
   (table) => [
-    uniqueIndex("raw_jobs_source_external_hash_uq").on(
+    uniqueIndex("raw_jobs_crawl_source_external_uq").on(
+      table.crawlRunId,
       table.jobSourceId,
       table.externalJobId,
-      table.contentHash,
     ),
 
     index("raw_jobs_crawl_run_id_idx").on(table.crawlRunId),
@@ -478,6 +478,12 @@ export const jobs = pgTable(
 
     externalJobId: text("external_job_id").notNull(),
 
+    latestRawJobId: uuid("latest_raw_job_id")
+    .notNull()
+    .references(() => rawJobs.id, {
+      onDelete: "restrict",
+    }),
+
     title: text("title").notNull(),
     normalizedTitle: text("normalized_title"),
 
@@ -512,9 +518,16 @@ export const jobs = pgTable(
 
     status: text("status").default("active").notNull(),
 
-    sourceContentHash: varchar("source_content_hash", {
+    normalizedContentHash: varchar("normalized_content_hash", {
       length: 64,
-    }),
+    }).notNull(),
+
+    normalizedAt: timestamp("normalized_at", {
+      withTimezone: true,
+      mode: "date",
+    })
+      .defaultNow()
+      .notNull(),
 
     firstSeenAt: timestamp("first_seen_at", {
       withTimezone: true,
@@ -540,6 +553,7 @@ export const jobs = pgTable(
 
     index("jobs_company_id_idx").on(table.companyId),
     index("jobs_source_id_idx").on(table.jobSourceId),
+    index("jobs_latest_raw_job_id_idx").on(table.latestRawJobId),
     index("jobs_location_id_idx").on(table.locationId),
     index("jobs_normalized_title_idx").on(table.normalizedTitle),
     index("jobs_experience_band_idx").on(table.experienceBand),
@@ -585,9 +599,20 @@ export const jobSnapshots = pgTable(
         onDelete: "cascade",
       }),
 
-    rawJobId: uuid("raw_job_id").references(() => rawJobs.id, {
-      onDelete: "set null",
-    }),
+    rawJobId: uuid("raw_job_id")
+      .notNull()
+      .references(() => rawJobs.id, {
+        onDelete: "restrict",
+      }),
+
+    snapshotVersion: integer("snapshot_version").notNull(),
+
+    changeType: text("change_type").notNull(),
+
+    changedFields: text("changed_fields")
+      .array()
+      .default(sql`ARRAY[]::text[]`)
+      .notNull(),
 
     snapshotHash: varchar("snapshot_hash", {
       length: 64,
@@ -612,6 +637,11 @@ export const jobSnapshots = pgTable(
       .notNull(),
   },
   (table) => [
+    uniqueIndex("job_snapshots_job_version_uq").on(
+      table.jobId,
+      table.snapshotVersion,
+    ),
+
     uniqueIndex("job_snapshots_job_hash_uq").on(
       table.jobId,
       table.snapshotHash,
@@ -620,6 +650,12 @@ export const jobSnapshots = pgTable(
     index("job_snapshots_job_id_idx").on(table.jobId),
     index("job_snapshots_raw_job_id_idx").on(table.rawJobId),
     index("job_snapshots_observed_at_idx").on(table.observedAt),
+    index("job_snapshots_change_type_idx").on(table.changeType),
+
+    check(
+      "job_snapshots_version_positive_check",
+      sql`${table.snapshotVersion} > 0`,
+    ),
   ],
 );
 
