@@ -1,5 +1,5 @@
 {
-  "name": "@jobintel/taxonomies",
+  "name": "@jobintel/source-registry",
   "version": "0.1.0",
   "private": true,
   "type": "module",
