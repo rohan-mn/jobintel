@@ -1,0 +1,7 @@
+{
+    "private":  true,
+    "description":  "Reusable ATS and custom website adapters.",
+    "name":  "@jobintel/source-adapters",
+    "version":  "0.0.0",
+    "type":  "module"
+}

@@ -1,0 +1,7 @@
+{
+    "private":  true,
+    "description":  "Ollama-based structured job enrichment service.",
+    "name":  "@jobintel/ai-enrichment",
+    "version":  "0.0.0",
+    "type":  "module"
+}

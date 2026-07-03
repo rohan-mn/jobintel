@@ -1,0 +1,31 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .: {}
+
+  apps/api: {}
+
+  apps/crawler-worker: {}
+
+  apps/dashboard: {}
+
+  apps/scheduler: {}
+
+  packages/analytics: {}
+
+  packages/database: {}
+
+  packages/job-schema: {}
+
+  packages/shared: {}
+
+  packages/source-adapters: {}
+
+  packages/taxonomies: {}
+
+  services/ai-enrichment: {}

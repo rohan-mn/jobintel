@@ -1,0 +1,7 @@
+{
+    "private":  true,
+    "description":  "Job crawling and processing workers.",
+    "name":  "@jobintel/crawler-worker",
+    "version":  "0.0.0",
+    "type":  "module"
+}

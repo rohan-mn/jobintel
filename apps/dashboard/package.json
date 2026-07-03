@@ -1,0 +1,7 @@
+{
+    "private":  true,
+    "description":  "Next.js analytics dashboard.",
+    "name":  "@jobintel/dashboard",
+    "version":  "0.0.0",
+    "type":  "module"
+}

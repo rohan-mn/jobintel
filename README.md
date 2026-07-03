@@ -1,47 +1,21 @@
-# jobintel
+# jobIntel
 
-Real-Time Job Market Intelligence Platform.
+A production-oriented job-market intelligence platform that collects,
+normalizes, enriches, and analyzes job postings across multiple companies,
+regions, ATS platforms, roles, experience levels, skills, and compensation
+bands.
 
-## Structure
-- apps/web: Next.js dashboard
-- apps/api: NestJS API
-- services/scraper: Scraper service
-- infra: docker-compose, local infrastructure
+## Repository structure
 
-### Commands to run
-
-1) docker run 
-
-2) Backend  
-    (a) (Nest JS)
-      -> npm run start  
-
-    (b) (Scrapper)
-      -> npm run dev
-
-    (c) (Worker)
-      -> npm run dev
-
-
-3) Frontend
-    -> npm run dev
-
-## Note 
-Check if ports 5432 AND 6379 are occupied, using cmd
-```
-C:\Windows\System32>netstat -ano | findstr :5432
-  TCP    0.0.0.0:5432           0.0.0.0:0              LISTENING       7528
-  TCP    0.0.0.0:5432           0.0.0.0:0              LISTENING       21472
-  TCP    [::]:5432              [::]:0                 LISTENING       7528
-  TCP    [::]:5432              [::]:0                 LISTENING       21472
-
-C:\Windows\System32>
-C:\Windows\System32>taskkill /PID 7528 /F
-SUCCESS: The process with PID 7528 has been terminated.
-
-C:\Windows\System32>netstat -ano | findstr :5432
-  TCP    0.0.0.0:5432           0.0.0.0:0              LISTENING       21472
-  TCP    [::]:5432              [::]:0                 LISTENING       21472
-
-C:\Windows\System32>
-```
+- `apps/crawler-worker` — crawl and processing workers
+- `apps/scheduler` — scheduled source-crawl orchestration
+- `apps/api` — Fastify API
+- `apps/dashboard` — Next.js analytics dashboard
+- `packages/database` — PostgreSQL and Drizzle ORM layer
+- `packages/job-schema` — canonical job contracts and Zod schemas
+- `packages/source-adapters` — reusable ATS and custom-site adapters
+- `packages/taxonomies` — controlled role, skill, and experience taxonomies
+- `packages/analytics` — analytics queries and aggregation logic
+- `packages/shared` — shared utilities and types
+- `services/ai-enrichment` — Ollama-based enrichment
+- `infrastructure` — Docker and monitoring configuration

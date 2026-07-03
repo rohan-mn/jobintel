@@ -1,0 +1,7 @@
+{
+    "private":  true,
+    "description":  "Canonical job contracts and Zod validation schemas.",
+    "name":  "@jobintel/job-schema",
+    "version":  "0.0.0",
+    "type":  "module"
+}

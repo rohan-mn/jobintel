@@ -1,0 +1,361 @@
+# Stop immediately if a command fails.
+$ErrorActionPreference = "Stop"
+
+# Ensure that this script is being run from the jobintel repository root.
+if (-not (Test-Path ".git")) {
+    throw "No .git directory found. Open the jobintel repository root in VS Code and run this again."
+}
+
+# UTF-8 without BOM keeps repository files consistent across Windows and Linux containers.
+$Utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+
+function Write-Utf8File {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Path,
+
+        [Parameter(Mandatory = $true)]
+        [AllowEmptyString()]
+        [string]$Content
+    )
+
+    $ParentDirectory = Split-Path -Parent $Path
+
+    if ($ParentDirectory -and -not (Test-Path $ParentDirectory)) {
+        New-Item -ItemType Directory -Path $ParentDirectory -Force | Out-Null
+    }
+
+    [System.IO.File]::WriteAllText(
+        (Join-Path (Get-Location) $Path),
+        $Content.TrimStart(),
+        $Utf8NoBom
+    )
+}
+
+# -------------------------------------------------------------------
+# Create permanent directories
+# -------------------------------------------------------------------
+
+$Directories = @(
+    "apps/crawler-worker/src",
+    "apps/scheduler/src",
+    "apps/api/src",
+    "apps/dashboard/src",
+
+    "packages/database/src",
+    "packages/job-schema/src",
+    "packages/source-adapters/src",
+    "packages/taxonomies/src",
+    "packages/analytics/src",
+    "packages/shared/src",
+
+    "services/ai-enrichment/src",
+
+    "infrastructure/docker",
+    "infrastructure/monitoring"
+)
+
+foreach ($Directory in $Directories) {
+    New-Item -ItemType Directory -Path $Directory -Force | Out-Null
+}
+
+# -------------------------------------------------------------------
+# Root package.json
+# -------------------------------------------------------------------
+
+Write-Utf8File "package.json" @'
+{
+  "name": "jobintel",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Production job-market intelligence and analytics platform.",
+  "type": "module",
+  "packageManager": "pnpm@11.9.0",
+  "engines": {
+    "node": ">=24.0.0 <25",
+    "pnpm": ">=11.0.0 <12"
+  },
+  "scripts": {
+    "dev": "pnpm --recursive --parallel --if-present dev",
+    "build": "pnpm --recursive --if-present build",
+    "test": "pnpm --recursive --if-present test",
+    "lint": "pnpm --recursive --if-present lint",
+    "typecheck": "pnpm --recursive --if-present typecheck",
+    "clean": "pnpm --recursive --if-present clean"
+  }
+}
+'@
+
+# -------------------------------------------------------------------
+# pnpm workspace definition
+# -------------------------------------------------------------------
+
+Write-Utf8File "pnpm-workspace.yaml" @'
+packages:
+  - "apps/*"
+  - "packages/*"
+  - "services/*"
+'@
+
+# -------------------------------------------------------------------
+# Shared TypeScript configuration
+# -------------------------------------------------------------------
+
+Write-Utf8File "tsconfig.base.json" @'
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2023"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "verbatimModuleSyntax": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": true
+  }
+}
+'@
+
+# -------------------------------------------------------------------
+# Git configuration files
+# -------------------------------------------------------------------
+
+Write-Utf8File ".gitignore" @'
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+build/
+.next/
+out/
+
+# Test output
+coverage/
+playwright-report/
+test-results/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+logs/
+
+# Runtime files
+*.pid
+*.pid.lock
+
+# IDE files
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+tmp/
+temp/
+.cache/
+
+# Local Docker data
+.docker-data/
+'@
+
+Write-Utf8File ".gitattributes" @'
+* text=auto eol=lf
+
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.pdf binary
+'@
+
+Write-Utf8File ".editorconfig" @'
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = true
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.ps1]
+end_of_line = crlf
+indent_size = 4
+'@
+
+# -------------------------------------------------------------------
+# Node version indicators
+# -------------------------------------------------------------------
+
+Write-Utf8File ".nvmrc" @'
+24
+'@
+
+Write-Utf8File ".node-version" @'
+24
+'@
+
+# -------------------------------------------------------------------
+# Initial Docker Compose file
+# Services will be added during infrastructure/database setup.
+# -------------------------------------------------------------------
+
+Write-Utf8File "docker-compose.yml" @'
+name: jobintel
+
+services: {}
+'@
+
+# -------------------------------------------------------------------
+# README
+# -------------------------------------------------------------------
+
+Write-Utf8File "README.md" @'
+# jobIntel
+
+A production-oriented job-market intelligence platform that collects,
+normalizes, enriches, and analyzes job postings across multiple companies,
+regions, ATS platforms, roles, experience levels, skills, and compensation
+bands.
+
+## Repository structure
+
+- `apps/crawler-worker` — crawl and processing workers
+- `apps/scheduler` — scheduled source-crawl orchestration
+- `apps/api` — Fastify API
+- `apps/dashboard` — Next.js analytics dashboard
+- `packages/database` — PostgreSQL and Drizzle ORM layer
+- `packages/job-schema` — canonical job contracts and Zod schemas
+- `packages/source-adapters` — reusable ATS and custom-site adapters
+- `packages/taxonomies` — controlled role, skill, and experience taxonomies
+- `packages/analytics` — analytics queries and aggregation logic
+- `packages/shared` — shared utilities and types
+- `services/ai-enrichment` — Ollama-based enrichment
+- `infrastructure` — Docker and monitoring configuration
+'@
+
+# -------------------------------------------------------------------
+# Function for creating workspace package manifests
+# -------------------------------------------------------------------
+
+function New-WorkspacePackage {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Directory,
+
+        [Parameter(Mandatory = $true)]
+        [string]$Name,
+
+        [Parameter(Mandatory = $true)]
+        [string]$Description
+    )
+
+    $PackageJson = @{
+        name        = $Name
+        version     = "0.0.0"
+        private     = $true
+        description = $Description
+        type        = "module"
+    } | ConvertTo-Json -Depth 10
+
+    Write-Utf8File "$Directory/package.json" $PackageJson
+    Write-Utf8File "$Directory/src/.gitkeep" ""
+}
+
+# -------------------------------------------------------------------
+# Applications
+# -------------------------------------------------------------------
+
+New-WorkspacePackage `
+    "apps/crawler-worker" `
+    "@jobintel/crawler-worker" `
+    "Job crawling and processing workers."
+
+New-WorkspacePackage `
+    "apps/scheduler" `
+    "@jobintel/scheduler" `
+    "Scheduled source crawling and queue orchestration."
+
+New-WorkspacePackage `
+    "apps/api" `
+    "@jobintel/api" `
+    "Fastify API for jobs, filters, and analytics."
+
+New-WorkspacePackage `
+    "apps/dashboard" `
+    "@jobintel/dashboard" `
+    "Next.js analytics dashboard."
+
+# -------------------------------------------------------------------
+# Shared packages
+# -------------------------------------------------------------------
+
+New-WorkspacePackage `
+    "packages/database" `
+    "@jobintel/database" `
+    "PostgreSQL schema, migrations, and Drizzle ORM integration."
+
+New-WorkspacePackage `
+    "packages/job-schema" `
+    "@jobintel/job-schema" `
+    "Canonical job contracts and Zod validation schemas."
+
+New-WorkspacePackage `
+    "packages/source-adapters" `
+    "@jobintel/source-adapters" `
+    "Reusable ATS and custom website adapters."
+
+New-WorkspacePackage `
+    "packages/taxonomies" `
+    "@jobintel/taxonomies" `
+    "Controlled job-role, skill, experience, and location taxonomies."
+
+New-WorkspacePackage `
+    "packages/analytics" `
+    "@jobintel/analytics" `
+    "Analytics queries, aggregations, and materialized-view definitions."
+
+New-WorkspacePackage `
+    "packages/shared" `
+    "@jobintel/shared" `
+    "Shared types, utilities, constants, and error definitions."
+
+# -------------------------------------------------------------------
+# Services
+# -------------------------------------------------------------------
+
+New-WorkspacePackage `
+    "services/ai-enrichment" `
+    "@jobintel/ai-enrichment" `
+    "Ollama-based structured job enrichment service."
+
+Write-Host ""
+Write-Host "jobIntel monorepo structure created successfully." -ForegroundColor Green

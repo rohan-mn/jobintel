@@ -1,0 +1,7 @@
+{
+    "private":  true,
+    "description":  "Shared types, utilities, constants, and error definitions.",
+    "name":  "@jobintel/shared",
+    "version":  "0.0.0",
+    "type":  "module"
+}

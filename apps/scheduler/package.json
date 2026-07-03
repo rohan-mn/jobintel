@@ -1,0 +1,7 @@
+{
+    "private":  true,
+    "description":  "Scheduled source crawling and queue orchestration.",
+    "name":  "@jobintel/scheduler",
+    "version":  "0.0.0",
+    "type":  "module"
+}

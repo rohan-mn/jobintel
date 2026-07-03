@@ -1,0 +1,7 @@
+{
+    "private":  true,
+    "description":  "Controlled job-role, skill, experience, and location taxonomies.",
+    "name":  "@jobintel/taxonomies",
+    "version":  "0.0.0",
+    "type":  "module"
+}

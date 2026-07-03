@@ -1,0 +1,7 @@
+{
+    "private":  true,
+    "description":  "PostgreSQL schema, migrations, and Drizzle ORM integration.",
+    "name":  "@jobintel/database",
+    "version":  "0.0.0",
+    "type":  "module"
+}

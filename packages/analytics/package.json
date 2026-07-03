@@ -1,0 +1,7 @@
+{
+    "private":  true,
+    "description":  "Analytics queries, aggregations, and materialized-view definitions.",
+    "name":  "@jobintel/analytics",
+    "version":  "0.0.0",
+    "type":  "module"
+}
